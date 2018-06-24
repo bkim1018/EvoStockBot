@@ -2,10 +2,19 @@
 import struct
 import numpy as np
 import random
+import pickle
 from trading_bot_class import *
 
 START_AMT = 100
 COMPANIES = ["FB"]
+
+def saveGeneration(gen):
+    with open("savedGeneration.pkl", 'wb') as outputStream:  # Overwrites any existing file.
+        pickle.dump(gen, outputStream, pickle.HIGHEST_PROTOCOL)
+
+def loadGeneration():
+    with open('savedGeneration.pkl', 'rb') as inputStream:
+        return pickle.load(inputStream)
 
 getBin = lambda x: x > 0 and str(bin(x))[2:] or "-" + str(bin(x))[3:]
 def floatToBinary(num):

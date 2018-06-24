@@ -1,12 +1,12 @@
 import keras
 
 
-class TradingBot:
 
+class TradingBot:
     """
     Instance that will store import information relevant it's portofolio
     """
-    def __init__(self,starting_money, company):
+    def __init__(self, starting_money, company):
         # Each rocket has an (x,y) position.
         self.money = starting_money
         self.shares = 0  # start with no shares
