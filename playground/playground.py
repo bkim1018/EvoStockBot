@@ -22,17 +22,31 @@ def evaluate_fitness(bot,data,senti_data):
     useful_data = data.values[:, [0, 4]]
 
     for cur_day in range(useful_data[SLIDING_LENGTH:].shape[0]):
+
         data_slice = useful_data[cur_day:cur_day + SLIDING_LENGTH]
         data_slice = normalize_data(data_slice).flatten()
 
         current_time = time[cur_day + SLIDING_LENGTH] ## must convert to datetime format for comparison
+        current_price = useful_data[cur_day + SLIDING_LENGTH][0]
+
         sentiment = get_sentiment(current_time,senti_data,SENTIMENT_LENGTH)
+
+        last_buy = bot.last_buy
+        last_sell = bot.last_sell
+
+        buy_state = bot.buy_state
+        changes_buy = (last_buy - current_price)/last_buy
+        changes_sell = (last_sell - current_price)/last_sell
 
         ## add last sell price and current trading state to data_slice
 
         data_slice = list(data_slice)
         data_slice.append(sentiment)
+        data_slice.append(buy_state)
+        data_slice.append(changes_buy)
+        data_slice.append(changes_sell)
 
+        data_slice = np.array(data_slice)
 
         decision = bot.make_decision(data_slice)
         if decision == 0:
