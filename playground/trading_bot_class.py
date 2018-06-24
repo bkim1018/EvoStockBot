@@ -1,17 +1,18 @@
 import keras
-import utils
 
-class TradingBot(starting_money, company):
+
+class TradingBot:
+
     """
     Instance that will store import information relevant it's portofolio
     """
-    def __init__(self):
+    def __init__(self,starting_money, company):
         # Each rocket has an (x,y) position.
         self.money = starting_money
-        self.shares = 0 # start with no shares
+        self.shares = 0  # start with no shares
         self.company = company
-        self.buy_state = True # True = can buy stock
-        self.neural_net = 0 # generate random neural net
+        self.buy_state = True  # True = can buy stock
+        self.neural_net = 0  # generate random neural net
         self.last_sell = 0
         self.last_buy = 0
         self.fitness = 0
@@ -49,10 +50,7 @@ class TradingBot(starting_money, company):
         return self.fitness
 
     def setNet(self, wMat):
-        # set weight matrix for the bot's neural net
-        pass
+        self.neural_net = wMat
 
-
-
-    def mutate(self):
-        self.neural_net = utils.mutate(self.neural_net)
+    # def mutate(self):
+    #     self.neural_net = utils.mutate(self.neural_net)

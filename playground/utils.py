@@ -2,7 +2,7 @@
 import struct
 import numpy as np
 import random
-import trading_bot_class.py
+from trading_bot_class import *
 
 START_AMT = 100
 COMPANIES = ["FB"]
@@ -105,7 +105,7 @@ def mutate(wMat, bitErrRate):
     :param bitErrRate: bit error rate in [0.0,1.0)
     :return: new mutated weight matrix
     """
-    structure = structure = [a.shape for a in wMat]
+    structure = [a.shape for a in wMat]
     binArr = weightMatToBin(wMat)
     rand = np.random.random(size=binArr.size)
     toChange = np.where(rand < bitErrRate)
