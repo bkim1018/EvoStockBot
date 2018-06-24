@@ -34,11 +34,17 @@ def get_google_finance_intraday(ticker, period=60, days=1):
                                                                           period=period,
                                                                           days=days)
     page = requests.get(uri)
-    reader = csv.reader(page.content.splitlines())
+
+    reader = page.content.splitlines()
+
     columns = ['Open', 'High', 'Low', 'Close', 'Volume']
     rows = []
     times = []
     for row in reader:
+        row = str(row).split(',')
+        row[0] = row[0].split("'")[1]
+        row[-1] = row[-1].split("'")[0]
+
         if re.match('^[a\d]', row[0]):
             if row[0].startswith('a'):
                 start = datetime.datetime.fromtimestamp(int(row[0][1:]))
