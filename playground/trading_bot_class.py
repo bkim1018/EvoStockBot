@@ -1,7 +1,7 @@
 import keras
 import utils
 
-class trading_bot(starting_money, company):
+class TradingBot(starting_money, company):
     """
     Instance that will store import information relevant it's portofolio
     """
@@ -25,8 +25,12 @@ class trading_bot(starting_money, company):
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
 
+    def setNet(self, wMat):
+        # set weight matrix for the bot's neural net
+        pass
 
-    def make_decision(self,data):
+
+    def make_decision(self, data):
         pass
 
     def mutate(self):
