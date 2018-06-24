@@ -20,8 +20,9 @@ def evaluate_fitness(bot,data,senti_data):
     """
     time = data.index.values
     useful_data = data.values[:, [0, 4]]
-
-    for cur_day in range(useful_data[SLIDING_LENGTH:].shape[0]):
+    data_len = useful_data[SLIDING_LENGTH:].shape[0]
+    print(data_len)
+    for cur_day in range(data_len):
         data_slice = useful_data[cur_day:cur_day + SLIDING_LENGTH]
         data_slice = normalize_data(data_slice).flatten()
 
@@ -47,12 +48,14 @@ def evaluate_fitness(bot,data,senti_data):
 
         data_slice = np.array(data_slice)
         data_slice = data_slice.reshape((1,94))
+
         decision = bot.make_decision(data_slice)
         if decision == 0:
             bot.sell(useful_data[cur_day,0])
         if decision == 1:
             bot.buy(useful_data[cur_day,0])
         if decision == 2:
+            # print('Hold')
             pass
 
     fitness = bot.money + bot.shares * useful_data[-1][0] ## show me the money
