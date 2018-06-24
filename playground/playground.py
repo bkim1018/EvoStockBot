@@ -22,7 +22,6 @@ def evaluate_fitness(bot,data,senti_data):
     useful_data = data.values[:, [0, 4]]
 
     for cur_day in range(useful_data[SLIDING_LENGTH:].shape[0]):
-
         data_slice = useful_data[cur_day:cur_day + SLIDING_LENGTH]
         data_slice = normalize_data(data_slice).flatten()
 
@@ -35,8 +34,8 @@ def evaluate_fitness(bot,data,senti_data):
         last_sell = bot.last_sell
 
         buy_state = bot.buy_state
-        changes_buy = (last_buy - current_price)/last_buy
-        changes_sell = (last_sell - current_price)/last_sell
+        changes_buy = (last_buy - current_price)/last_buy if last_buy != 0 else 0
+        changes_sell = (last_sell - current_price)/last_sell if last_sell != 0 else 0
 
         ## add last sell price and current trading state to data_slice
 
@@ -47,12 +46,12 @@ def evaluate_fitness(bot,data,senti_data):
         data_slice.append(changes_sell)
 
         data_slice = np.array(data_slice)
-
+        data_slice = data_slice.reshape((1,94))
         decision = bot.make_decision(data_slice)
         if decision == 0:
-            bot.sell(data[cur_day][0])
+            bot.sell(useful_data[cur_day,0])
         if decision == 1:
-            bot.buy(data[cur_day][0])
+            bot.buy(useful_data[cur_day,0])
         if decision == 2:
             pass
 
