@@ -1,7 +1,6 @@
 import keras
 import utils
 
-class trading_bot(starting_money, company):
     """
     Instance that will store import information relevant it's portofolio
     """
@@ -47,6 +46,12 @@ class trading_bot(starting_money, company):
 
     def get_fitness(selfs):
         return self.fitness
+
+    def setNet(self, wMat):
+        # set weight matrix for the bot's neural net
+        pass
+
+
 
     def mutate(self):
         self.neural_net = utils.mutate(self.neural_net)
