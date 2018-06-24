@@ -1,6 +1,7 @@
 import keras
 import utils
 
+class TradingBot(starting_money, company):
     """
     Instance that will store import information relevant it's portofolio
     """
