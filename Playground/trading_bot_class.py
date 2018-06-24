@@ -1,7 +1,5 @@
 import keras
 
-
-
 class TradingBot:
     """
     Instance that will store import information relevant it's portofolio
@@ -25,7 +23,7 @@ class TradingBot:
             self.last_trade = stock_price
 
     def buy(self,stock_price):
-        if buy_state == True:
+        if self.buy_state == True:
             self.buy_state = False
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
@@ -46,10 +44,12 @@ class TradingBot:
         index = prediction.index(max(prediction))
         return(index)
 
+
+
     def get_fitness(selfs):
         return self.fitness
 
-    def setNet(self, wMat):
+    def set_net(self, wMat):
         self.neural_net = wMat
 
     # def mutate(self):

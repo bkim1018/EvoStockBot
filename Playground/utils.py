@@ -70,7 +70,7 @@ def binToWeightMat(bin, structure):
             count = s[0] * s[1]
         else:
             count = s[0]
-            arrs.append(flat[cur:cur + count].reshape(s))
+        arrs.append(flat[cur:cur + count].reshape(s))
         cur += count
 
     return arrs
@@ -92,6 +92,7 @@ def create_offspring(p1,p2):
     p1Split = np.split(p1Bin, splitInd)
     p2Split = np.split(p2Bin, splitInd)
 
+
     # combine parent dna to make child
     cArrs = []
     for i in range(len(p1Split)):
@@ -101,9 +102,8 @@ def create_offspring(p1,p2):
         else:
             cArrs.append(p2Split[i])
     cBin = np.concatenate(cArrs)
-
     child = TradingBot(START_AMT, COMPANIES)
-    child.setNet(binToWeightMat(cBin, structure))
+    child.neural_net = binToWeightMat(cBin, structure)
 
     return child
 
