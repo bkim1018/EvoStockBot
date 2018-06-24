@@ -44,9 +44,9 @@ def evaluate_fitness(bot,data,senti_data):
         data_slice.append(buy_state)
         data_slice.append(changes_buy)
         data_slice.append(changes_sell)
-
         data_slice = np.array(data_slice)
         data_slice = data_slice.reshape((1,94))
+
         decision = bot.make_decision(data_slice)
         if decision == 0:
             bot.sell(useful_data[cur_day,0])
