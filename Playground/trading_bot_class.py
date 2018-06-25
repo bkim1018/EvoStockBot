@@ -1,19 +1,13 @@
 import keras
-<<<<<<< HEAD:playground/trading_bot_class.py
 import numpy as np
 from math import floor
-=======
 
->>>>>>> 45328cd7c93685238d928bb71a26f0dfd70cd17e:Playground/trading_bot_class.py
 class TradingBot:
     """
     Instance that will store import information relevant it's portofolio
     """
-<<<<<<< HEAD:playground/trading_bot_class.py
     def __init__(self,starting_money, company,neural_net):
-=======
-    def __init__(self, starting_money, company):
->>>>>>> 45328cd7c93685238d928bb71a26f0dfd70cd17e:Playground/trading_bot_class.py
+
         # Each rocket has an (x,y) position.
         self.money = starting_money
         self.shares = 0  # start with no shares
@@ -25,22 +19,19 @@ class TradingBot:
         self.fitness = 0
 
     def sell(self,stock_price):
-        print('Tried to sell')
+        # print('Tried to sell')
         if self.buy_state == False:
-            print('Sold')
+            # print('Sold at ',stock_price)
             self.buy_state = True
             self.money = self.money + self.shares * stock_price
             self.shares = 0
             self.last_trade = stock_price
 
     def buy(self,stock_price):
-<<<<<<< HEAD:playground/trading_bot_class.py
-        print('Tried to buy')
+        # print('Tried to buy')
+        # print(self.buy_state)
         if self.buy_state == True:
-            print('Bought')
-=======
-        if self.buy_state == True:
->>>>>>> 45328cd7c93685238d928bb71a26f0dfd70cd17e:Playground/trading_bot_class.py
+            # print('Bought at ',stock_price)
             self.buy_state = False
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
@@ -67,13 +58,9 @@ class TradingBot:
     def get_fitness(selfs):
         return self.fitness
 
-<<<<<<< HEAD:playground/trading_bot_class.py
     def setNet(self, wMat):
         self.neural_net.set_weights(wMat)
-=======
-    def set_net(self, wMat):
-        self.neural_net = wMat
->>>>>>> 45328cd7c93685238d928bb71a26f0dfd70cd17e:Playground/trading_bot_class.py
+
 
     # def mutate(self):
     #     self.neural_net = utils.mutate(self.neural_net)

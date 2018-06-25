@@ -1,12 +1,13 @@
 import keras
 import numpy as np
 from math import floor
+import utils
 
 class TradingBot:
     """
     Instance that will store import information relevant it's portofolio
     """
-    def __init__(self,starting_money, company, neural_net):
+    def __init__(self,starting_money, company,neural_net):
         # Each rocket has an (x,y) position.
         self.money = starting_money
         self.shares = 0  # start with no shares
@@ -18,28 +19,31 @@ class TradingBot:
         self.fitness = 0
 
     def sell(self,stock_price):
-        print('Tried to sell')
+        # print('Tried to sell')
         if self.buy_state == False:
-            print('Sold')
+            # print('Sold at ',stock_price)
             self.buy_state = True
             self.money = self.money + self.shares * stock_price
             self.shares = 0
             self.last_trade = stock_price
 
     def buy(self,stock_price):
-        print('Tried to buy')
+        # print('Tried to buy')
         if self.buy_state == True:
+            # print('Bought')
             self.buy_state = False
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
             self.last_buy = stock_price
 
-    def reset_attributes(self,new_money,new_company):
+    def reset_attributes(self,new_money,new_company, resetFitness=False):
         self.money = new_money
         self.shares = 0  # start with no shares
         self.company = new_company
         self.buy_state = True  # True = can buy stock
         self.last_trade = 0
+        if resetFitness:
+            self.fitness = 0
 
     def add_fitness(self,new_fitness):
         self.fitness += new_fitness
@@ -52,11 +56,12 @@ class TradingBot:
 
 
 
-    def get_fitness(selfs):
+    def get_fitness(self):
         return self.fitness
 
     def setNet(self, wMat):
         self.neural_net.set_weights(wMat)
 
-    # def mutate(self):
-    #     self.neural_net = utils.mutate(self.neural_net)
+
+    def mutate(self, bitErrRate):
+        self.setNet(utils.mutate(self.neural_net.get_weights(), bitErrRate))
