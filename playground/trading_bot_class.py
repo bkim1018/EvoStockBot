@@ -21,20 +21,20 @@ class TradingBot:
     def sell(self,stock_price):
         # print('Tried to sell')
         if self.buy_state == False:
-            # print('Sold at ',stock_price)
             self.buy_state = True
             self.money = self.money + self.shares * stock_price
             self.shares = 0
             self.last_trade = stock_price
+            # print('Sold at ', stock_price, '    Money', self.money + self.shares * stock_price)
 
     def buy(self,stock_price):
         # print('Tried to buy')
         if self.buy_state == True:
-            # print('Bought')
             self.buy_state = False
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
             self.last_buy = stock_price
+            # print('Bought at', stock_price, '    Money', self.money + self.shares * stock_price)
 
     def reset_attributes(self,new_money,new_company, resetFitness=False):
         self.money = new_money
@@ -50,10 +50,14 @@ class TradingBot:
 
     def make_decision(self,data):
         prediction = self.neural_net.predict(data)[0]
-        index = np.where(prediction == np.amax(prediction))[0][0]
-
-        return(index)
-
+        try:
+            index = np.where(prediction == np.amax(prediction))[0][0]
+            return index
+        except IndexError:
+            # print("RECEIVED INDEX ERROR YOU FKIN IDIOT")
+            # print('data = ' , data)
+            # print('prediction: ', self.neural_net.predict(data))
+            return 2
 
 
     def get_fitness(self):
