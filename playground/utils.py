@@ -1,4 +1,5 @@
 # Utility Functions
+import os
 import struct
 import numpy as np
 import random
@@ -9,15 +10,35 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.optimizers import SGD
 
-START_AMT = 3000
+START_AMT = 1000
+saveFilepath = "botSaves/"
 
-def saveGeneration(gen, number):
-    with open("generations/savedGeneration %d.pkl" % number, 'wb') as outputStream:  # Overwrites any existing file.
-        pickle.dump(gen, outputStream, pickle.HIGHEST_PROTOCOL)
+def saveGeneration(bots, numBots):
+    # clear the save folder
+    for the_file in os.listdir(saveFilepath):
+        file_path = os.path.join(saveFilepath, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+        except Exception as e:
+            print(e)
+
+    for i in range(numBots):
+        filepath = saveFilepath+'bot%d.h5' % i
+        bots[i].neural_net.save(filepath)
+
+    # with open("generations/savedGeneration %d.pkl" % number, 'wb') as outputStream:  # Overwrites any existing file.
+    #     pickle.dump(gen, outputStream, pickle.HIGHEST_PROTOCOL)
 
 def loadGeneration():
-    with open('savedGeneration.pkl', 'rb') as inputStream:
-        return pickle.load(inputStream)
+    bots = []
+    for the_file in os.listdir(saveFilepath):
+        file_path = os.path.join(saveFilepath, the_file)
+        bots.append(keras.models.load_model(file_path))
+    return bots
+
+    # with open('savedGeneration.pkl', 'rb') as inputStream:
+    #     return pickle.load(inputStream)
 
 
 def createDummy():
