@@ -4,11 +4,12 @@ import pandas as pd
 from datetime import datetime
 import re
 from dateutil import parser
+from matplotlib import pyplot as plt
 
 SLIDING_LENGTH = 45
 SENTIMENT_LENGTH = 10
 
-def evaluate_fitness(bot,data,senti_data):
+def evaluate_fitness(bot,data,senti_data, debug_mode = False, print_trades = False):
     """
     bot = trading bot instance
     data = historical price data of a certain stock [price, volume]
@@ -22,6 +23,19 @@ def evaluate_fitness(bot,data,senti_data):
     useful_data = data.values[:, [0, 4]]
     data_len = useful_data[SLIDING_LENGTH:].shape[0]
     # print(data_len)
+
+    if debug_mode:
+        bought = []
+        attempt_buy = []
+        sold = []
+        attemp_sold = []
+        hodl = []
+        assets = []
+
+    if print_trades:
+        print('Starting to trade: ', bot.company)
+
+
     for cur_day in range(data_len):
         data_slice = useful_data[cur_day:cur_day + SLIDING_LENGTH]
         data_slice = normalize_data(data_slice).flatten()
@@ -49,15 +63,65 @@ def evaluate_fitness(bot,data,senti_data):
         data_slice = data_slice.reshape((1,94))
 
         decision = bot.make_decision(data_slice)
-        if decision == 0:
-            bot.sell(useful_data[cur_day,0])
-        if decision == 1:
-            bot.buy(useful_data[cur_day,0])
-        if decision == 2:
-            # print('Hold')
-            pass
+
+        if debug_mode == False:
+            if decision == 0:
+                bot.sell(current_price)
+            if decision == 1:
+                bot.buy(current_price)
+            if decision == 2:
+                # print('Hold')
+                pass
+
+        if debug_mode:
+            action = (current_time,current_price)
+            if decision == 0:
+                sell = bot.sell(current_price,debug_mode)
+                if sell == 1:
+
+                    if print_trades:
+                        print('Money: ', bot.money,' Sold at: ', current_price, ' shares: ', bot.shares)
+                    sold.append(action)
+                    assets.append(bot.money + bot.shares * current_price)
+
+                if sell == 2:
+                    attemp_sold.append(action)
+
+            if decision == 1:
+                buy = bot.buy(current_price,debug_mode)
+                if buy == 3:
+                    if print_trades:
+                        print('Money: ', bot.money,' bought at: ', current_price, ' shares: ', bot.shares)
+
+                    bought.append(action)
+                if buy == 4:
+                    attempt_buy.append(action)
+            if decision == 2:
+                hodl.append(action)
+
+
+    if debug_mode:
+        plt.figure(figsize = (20,10))
+        plt.plot(data['Open'])
+
+        plt.scatter(*zip(*sold),c = 'r')
+        # plt.scatter(*zip(*attemp_sold))
+        plt.scatter(*zip(*bought),c = 'g')
+        # plt.scatter(*zip(*attempt_buy))
+        # print(hodl)
+        # plt.scatter(*zip(*hodl))
+
+        plt.legend(['price','sold','bought'])
+        plt.show()
+        plt.plot(assets)
+        plt.show()
+        # plt.legend(['price','sold','attempted sell','bought','attemped buy', 'hold'])
+        # plt.show()
 
     fitness = bot.money + bot.shares * useful_data[-1][0] ## show me the money
+    if print_trades:
+        print('Fitness from ',bot.company,' : ', fitness)
+
     return fitness
 
 def normalize_data(slidiing_window_data):
