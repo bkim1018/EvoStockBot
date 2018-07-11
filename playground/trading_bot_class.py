@@ -18,30 +18,39 @@ class TradingBot:
         self.last_buy = 0
         self.fitness = 0
 
-    def sell(self,stock_price):
+    def sell(self,stock_price, debug_mode = False):
         # print('Tried to sell')
         if self.buy_state == False:
             self.buy_state = True
             self.money = self.money + self.shares * stock_price
             self.shares = 0
-            self.last_trade = stock_price
+            self.last_sell = stock_price
+            if debug_mode:
+                return 1
             # print('Sold at ', stock_price, '    Money', self.money + self.shares * stock_price)
+        if debug_mode:
+            return 2
 
-    def buy(self,stock_price):
+    def buy(self,stock_price, debug_mode = False):
         # print('Tried to buy')
         if self.buy_state == True:
             self.buy_state = False
             self.shares = floor(self.money/stock_price)
             self.money = self.money - self.shares * stock_price
             self.last_buy = stock_price
+            if debug_mode:
+                return 3
             # print('Bought at', stock_price, '    Money', self.money + self.shares * stock_price)
+        if debug_mode:
+            return 4
 
     def reset_attributes(self,new_money,new_company, resetFitness=False):
         self.money = new_money
         self.shares = 0  # start with no shares
         self.company = new_company
         self.buy_state = True  # True = can buy stock
-        self.last_trade = 0
+        self.last_buy = 0
+        self.last_sell = 0
         if resetFitness:
             self.fitness = 0
 

@@ -47,11 +47,11 @@ def createDummy():
     # in the first layer, you must specify the expected input data shape:
     # here, 20-dimensional vectors.
 
-    model.add(Dense(20, input_dim=94))
+    model.add(Dense(10, input_dim=94))
     model.add(Activation('sigmoid'))
-    model.add(Dense(20))
+    model.add(Dense(10))
     model.add(Activation('sigmoid'))
-    model.add(Dense(20))
+    model.add(Dense(10))
     model.add(Activation('sigmoid'))
     model.add(Dense(3))
     model.add(Activation('softmax'))

@@ -1,0 +1,36 @@
+Possible stocks:
+
+CURRENTLY USED:
+FB
+MSFT
+TWTR
+AAPL
+IBM
+DELL
+
+INVESTIGATE:
+PYPL
+INTEL
+JPMC
+HP
+SONY
+SNAP
+NVIDIA
+AMD
+BANK OF AMERICA
+
+TEST SET:
+
+
+NEXT STEPS:
+- Train on larger test set/ decide whether or not a larger model is worth pursuing 
+- Consider closely regularization
+- choose stocks
+- potentially parallelize 
+
+- create real-time model
+-	twitter stream logic
+-	integrating robinhood api to our model
+-	retrieving robinghood data
+
+- run real time tests
