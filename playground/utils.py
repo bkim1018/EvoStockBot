@@ -178,6 +178,7 @@ def getNextGen(curGen, bitErrRate):
     newGen = curGen[:int(count*7/20)].copy()  # keep top 35%
     topHalf = curGen[:int(count/2)].copy()
     botHalf = curGen[int(count/2):].copy()
+    
     random.shuffle(topHalf)
     random.shuffle(botHalf)
     newGen += botHalf[:int(count/20)]  # keep random 5% from bottom 50
@@ -207,6 +208,11 @@ def getNextGen(curGen, bitErrRate):
     #     bot = create_offspring(topHalf[i], topHalf[i])  # fix me later
     #     bot.mutate(bitErrRate)
     #     newGen.append(bot)
+    
+    # to prevent major slow down
+    del curGen
+    del topHalf
+    del botHalf
 
 
     return newGen

@@ -31,8 +31,6 @@ def evaluate_fitness(bot,data,senti_data, debug_mode = False, print_trades = Fal
         attemp_sold = []
         hodl = []
         assets = []
-
-    if print_trades:
         print('Starting to trade: ', bot.company)
 
 
@@ -98,29 +96,28 @@ def evaluate_fitness(bot,data,senti_data, debug_mode = False, print_trades = Fal
                     attempt_buy.append(action)
             if decision == 2:
                 hodl.append(action)
-
+        
+    fitness = bot.money + bot.shares * useful_data[-1][0] ## show me the money
 
     if debug_mode:
-        plt.figure(figsize = (20,10))
-        plt.plot(data['Open'])
+#         plt.figure(figsize = (20,10))
+#         plt.plot(data['Open'])
 
-        plt.scatter(*zip(*sold),c = 'r')
+#         plt.scatter(*zip(*sold),c = 'r')
         # plt.scatter(*zip(*attemp_sold))
-        plt.scatter(*zip(*bought),c = 'g')
+#         plt.scatter(*zip(*bought),c = 'g')
         # plt.scatter(*zip(*attempt_buy))
-        # print(hodl)
-        # plt.scatter(*zip(*hodl))
+        print(hodl)
+#         plt.scatter(*zip(*hodl))
 
-        plt.legend(['price','sold','bought'])
-        plt.show()
+#         plt.legend(['price','sold','bought'])
+#         plt.show()
         plt.plot(assets)
         plt.show()
+        print('Fitness from ',bot.company,' : ', fitness)
+
         # plt.legend(['price','sold','attempted sell','bought','attemped buy', 'hold'])
         # plt.show()
-
-    fitness = bot.money + bot.shares * useful_data[-1][0] ## show me the money
-    if print_trades:
-        print('Fitness from ',bot.company,' : ', fitness)
 
     return fitness
 
